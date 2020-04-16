@@ -12,7 +12,7 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_when_given_a_date
-    skip
+  skip
   expected = {
     encryption: "keder ohulw",
     key: "02715",
@@ -55,4 +55,13 @@ class EnigmaTest < Minitest::Test
     skip
     assert_equal expected, @enigma.encrypt("hello world")
   end
+
+  def test_it_can_create_keys
+    assert_equal ['02', '27', '71', '15'], @enigma.split_key("02715")
+  end
+
+  def test_it_can_create_offsets_from_a_given_date
+    assert_equal ["1", "0", "2", "5"], @enigma.date_to_offsets("040895")
+  end
+
 end

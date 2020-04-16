@@ -1,6 +1,11 @@
 class Enigma
 
+  attr_reader :alphabet
+  def initialize
+    @alphabet = ("a".."z").to_a << " "
+  end
   def encrypt(message, key, date)
+    shifts = create_shifts(key, date)
   end
 
   def split_key(key)

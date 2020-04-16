@@ -57,11 +57,15 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_create_keys
-    assert_equal ['02', '27', '71', '15'], @enigma.split_key("02715")
+    assert_equal [2, 27, 71, 15], @enigma.split_key("02715")
   end
 
   def test_it_can_create_offsets_from_a_given_date
-    assert_equal ["1", "0", "2", "5"], @enigma.date_to_offsets("040895")
+    assert_equal [1, 0, 2, 5], @enigma.date_to_offsets("040895")
+  end
+
+  def test_it_can_find_the_shifts_from_the_key_and_date
+    assert_equal [3, 27, 73, 20], @enigma.create_shifts("02715", "040895")
   end
 
 end

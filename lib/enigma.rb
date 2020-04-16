@@ -4,8 +4,21 @@ class Enigma
   def initialize
     @alphabet = ("a".."z").to_a << " "
   end
+
   def encrypt(message, key, date)
+    encrypted = ""
     shifts = create_shifts(key, date)
+    split_message(message).each do |chars|
+      chars.zip(shifts).each do |char, shift_value|
+        new_index = @alphabet.find_index(char) + shift_value
+        encrypted.concat(@alphabet[new_index])
+      end
+    end
+    encrypted
+  end
+
+  def split_message(message)
+    message.chars.each_slice(4).to_a
   end
 
   def split_key(key)

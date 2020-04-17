@@ -6,7 +6,11 @@ class Enigma
   end
 
   def encrypt(message, key, date)
-
+    {
+      encryption: encrypt_message(message, key, date),
+      key: key,
+      date: date
+    }
   end
 
   def encrypt_message(message, key, date)

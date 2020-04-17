@@ -5,7 +5,11 @@ class Enigma
     @alphabet = ("a".."z").to_a << " "
   end
 
-  def encrypt(message, key, date)
+  def todays_date
+    Date.today.strftime(("%d%m%y"))
+  end
+
+  def encrypt(message, key, date = todays_date)
     {
       encryption: encrypt_message(message, key, date),
       key: key,
@@ -13,7 +17,7 @@ class Enigma
     }
   end
 
-  def decrypt(encrypted_message, key, date)
+  def decrypt(encrypted_message, key, date = todays_date)
     {
       decryption: decrypt_message(encrypted_message, key, date),
       key: key,

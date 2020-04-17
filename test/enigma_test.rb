@@ -16,6 +16,13 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.alphabet
   end
 
+  def test_it_can_return_the_date
+    assert_instance_of String, @enigma.todays_date
+    assert_equal 6, @enigma.todays_date.length
+    @enigma.stubs(:todays_date).returns("160420")
+    assert_equal "160420", @enigma.todays_date
+  end
+
   def test_encrypt_when_given_a_date
   expected = {
     encryption: "keder ohulw",
@@ -35,7 +42,7 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_with_todays_date
-    skip
+  @enigma.stubs(:todays_date).returns("040895")
   expected = {
     encryption: "keder ohulw",
     key: "02715",
@@ -45,7 +52,7 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_decrypt_with_todays_date
-    skip
+    @enigma.stubs(:todays_date).returns("040895")
     expected = {
           decryption: "hello world",
           key: "02715",

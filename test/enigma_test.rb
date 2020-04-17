@@ -16,7 +16,8 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.alphabet
   end
 
-  def test_it_can_encrypt_when_given_a_date
+  def test_encrypt_when_given_a_date
+  skip
   expected = {
     encryption: "keder ohulw",
     key: "02715",
@@ -45,7 +46,7 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.encrypt("hello world", "02715")
   end
 
-  def test_it_can_decrypt_with_todays_date
+  def test_decrypt_with_todays_date
     skip
     expected = {
           decryption: "hello world",
@@ -55,7 +56,11 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715")
   end
 
-  def test_it_can_encrypt_with_a_random_key_and_todays_date
+  def test_encrypt_message
+    assert_equal "keder ohulw", @enigma.encrypt_message("hello world", "02715", "040895")
+  end
+
+  def test_encrypt_with_a_random_key_and_todays_date
     skip
     assert_equal expected, @enigma.encrypt("hello world")
   end
@@ -64,15 +69,15 @@ class EnigmaTest < Minitest::Test
     assert_equal [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]], @enigma.split_message("hello world")
   end
 
-  def test_it_can_create_keys
+  def test_create_keys
     assert_equal [2, 27, 71, 15], @enigma.split_key("02715")
   end
 
-  def test_it_can_create_offsets_from_a_given_date
+  def test_create_offsets_from_a_given_date
     assert_equal [1, 0, 2, 5], @enigma.date_to_offsets("040895")
   end
 
-  def test_it_can_find_the_shifts_from_the_key_and_date
+  def test_find_the_shifts_from_the_key_and_date
     assert_equal [3, 27, 73, 20], @enigma.create_shifts("02715", "040895")
   end
 

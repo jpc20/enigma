@@ -6,11 +6,15 @@ class Enigma
   end
 
   def encrypt(message, key, date)
+
+  end
+
+  def encrypt_message(message, key, date)
     encrypted = ""
     shifts = create_shifts(key, date)
     split_message(message).each do |chars|
       chars.zip(shifts).each do |char, shift_value|
-        new_index = @alphabet.find_index(char) + shift_value
+        new_index = (@alphabet.find_index(char) + shift_value) % 27
         encrypted.concat(@alphabet[new_index])
       end
     end
@@ -33,6 +37,10 @@ class Enigma
 
   def create_shifts(key, date)
     split_key(key).zip(date_to_offsets(date)).map { |nums| nums.reduce(:+) }
+  end
+
+  def find_new_index(chars)
+
   end
 
 end

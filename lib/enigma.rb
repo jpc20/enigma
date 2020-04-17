@@ -13,6 +13,14 @@ class Enigma
     }
   end
 
+  def decrypt(encrypted_message, key, date)
+    {
+      decryption: decrypt_message(encrypted_message, key, date),
+      key: key,
+      date: date
+    }
+  end
+
   def encrypt_message(message, key, date)
     encrypted = ""
     shifts = create_shifts(key, date)
@@ -23,6 +31,18 @@ class Enigma
       end
     end
     encrypted
+  end
+
+  def decrypt_message(encrypted_message, key, date)
+    decrypted = ""
+    shifts = create_shifts(key, date)
+    split_message(encrypted_message).each do |chars|
+      chars.zip(shifts).each do |char, shift_value|
+        new_index = (@alphabet.find_index(char) - shift_value) % 27
+        decrypted.concat(@alphabet[new_index])
+      end
+    end
+    decrypted
   end
 
   def split_message(message)
@@ -41,10 +61,6 @@ class Enigma
 
   def create_shifts(key, date)
     split_key(key).zip(date_to_offsets(date)).map { |nums| nums.reduce(:+) }
-  end
-
-  def find_new_index(chars)
-
   end
 
 end

@@ -26,7 +26,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_decrypt_when_given_a_date
-    skip
     expected = {
           decryption: "hello world",
           key: "02715",
@@ -57,6 +56,10 @@ class EnigmaTest < Minitest::Test
 
   def test_encrypt_message
     assert_equal "keder ohulw", @enigma.encrypt_message("hello world", "02715", "040895")
+  end
+
+  def test_decrypt_message
+    assert_equal "hello world", @enigma.decrypt_message("keder ohulw", "02715", "040895")
   end
 
   def test_encrypt_with_a_random_key_and_todays_date

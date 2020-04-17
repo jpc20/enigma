@@ -23,6 +23,12 @@ class EnigmaTest < Minitest::Test
     assert_equal "160420", @enigma.todays_date
   end
 
+  def test_it_can_generate_a_random_5_digit_key
+    assert_instance_of String, @enigma.generate_key
+    assert_equal 5, @enigma.generate_key.length
+    assert_equal true, @enigma.generate_key.chars.all? { |char| char.to_i >= 0 && char.to_i < 10 }
+  end
+
   def test_encrypt_when_given_a_date
   expected = {
     encryption: "keder ohulw",
@@ -70,7 +76,13 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_encrypt_with_a_random_key_and_todays_date
-    skip
+    @enigma.stubs(:todays_date).returns("040895")
+    @enigma.stubs(:generate_key).returns("02715")
+    expected = {
+      encryption: "keder ohulw",
+      key: "02715",
+      date: "040895"
+    }
     assert_equal expected, @enigma.encrypt("hello world")
   end
 

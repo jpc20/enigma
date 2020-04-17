@@ -9,7 +9,13 @@ class Enigma
     Date.today.strftime(("%d%m%y"))
   end
 
-  def encrypt(message, key, date = todays_date)
+  def generate_key
+    key = ""
+    5.times{ key.concat(rand(0..9).to_s)}
+    key
+  end
+
+  def encrypt(message, key = generate_key, date = todays_date)
     {
       encryption: encrypt_message(message, key, date),
       key: key,

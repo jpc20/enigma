@@ -44,7 +44,7 @@ class Enigma
         end
       end
     end
-    encrypted
+    encrypted.chomp
   end
 
   def decrypt_message(encrypted_message, key, date)

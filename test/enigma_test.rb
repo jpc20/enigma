@@ -102,4 +102,25 @@ class EnigmaTest < Minitest::Test
     assert_equal [3, 27, 73, 20], @enigma.create_shifts("02715", "040895")
   end
 
+  def test_encrypt_with_characters_not_in_alphabet
+    @enigma.stubs(:todays_date).returns("040895")
+    @enigma.stubs(:generate_key).returns("02715")
+    expected = {
+      encryption: "keder ohulw!",
+      key: "02715",
+      date: "040895"
+    }
+    assert_equal expected, @enigma.encrypt("Hello World!")
+  end
+
+  def test_decrypt_with_characters_not_in_alphabet
+    @enigma.stubs(:todays_date).returns("040895")
+    expected = {
+      decryption: "hello world!",
+      key: "02715",
+      date: "040895"
+    }
+    assert_equal expected, @enigma.decrypt("Keder Ohulw!", "02715")
+  end
+
 end

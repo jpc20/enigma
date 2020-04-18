@@ -31,6 +31,14 @@ class Enigma
     }
   end
 
+  def crack(encrypted_message, date = todays_date)
+    {
+      decryption: crack_message(encrypted_message, date),
+      #key: key,
+      date: date
+    }
+  end
+
   def encrypt_message(message, key, date)
     encrypted = ""
     shifts = create_shifts(key, date)
@@ -63,6 +71,22 @@ class Enigma
     decrypted
   end
 
+  def crack_message(encrypted_message, date)
+    cracked = ""
+    shifts = find_shifts(encrypted_message, date)
+    split_message(encrypted_message).each do |chars|
+      chars.zip(shifts).each do |char, shift_value|
+        if alphabet.include?(char)
+          new_index = (@alphabet.find_index(char) - shift_value) % 27
+          cracked.concat(@alphabet[new_index])
+        else
+          cracked.concat(char)
+        end
+      end
+    end
+    cracked
+  end
+
   def split_message(message)
     message.chars.each_slice(4).to_a.map do |chars|
       chars.map { |char| char.downcase }
@@ -81,6 +105,29 @@ class Enigma
 
   def create_shifts(key, date)
     split_key(key).zip(date_to_offsets(date)).map { |nums| nums.reduce(:+) }
+  end
+
+  def find_key(encrypted_message, date)
+    #date_to_offsets(date)
+  end
+
+  def find_shifts(encrypted_message, date)
+    shifts = nil
+    split_encrypted = split_message(encrypted_message)
+    last_chars_length = split_encrypted.last.length
+    if last_chars_length == 4
+      shifts = split_encrypted.last.zip([" ", "e", "n", "d"]).map do |message_char, end_char|
+        (@alphabet.find_index(message_char) - @alphabet.find_index(end_char))
+      end
+    elsif last_chars_length < 4
+      shifts = split_encrypted.last.zip([" ", "e", "n", "d"].last(last_chars_length)).map do |message_char, end_char|
+        (@alphabet.find_index(message_char) - @alphabet.find_index(end_char)) % 27
+      end
+      shifts << split_encrypted[-2].last(4 - last_chars_length).each_with_index.map do |char, index|
+        (@alphabet.find_index(char) - @alphabet.find_index([" ", "e", "n", "d"][index])) % 27
+      end
+    end
+    shifts.flatten
   end
 
 end

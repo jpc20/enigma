@@ -123,4 +123,24 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.decrypt("Keder Ohulw!", "02715")
   end
 
+  def test_crack_encrypted_message_with_a_date
+    skip
+    expected =
+  {
+    decryption: "hello world end",
+    date: "291018",
+    key: "08304"
+  }
+    assert_equal expected, @enigma.crack("vjqtbeaweqihssi", "291018")
+  end
+
+  def test_find_key_with_date_and_encrypted_message
+    skop
+    assert_equal "08304", @enigma.find_key("vjqtbeaweqihssi", "291018")
+  end
+
+  def test_find_shifts_with_date_and_encrypted_message
+    assert_equal [14, 86, 32, 8], @enigma.find_shifts("vjqtbeaweqihssi", "291018")
+  end
+
 end

@@ -135,12 +135,11 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_find_key_with_date_and_encrypted_message
-    skop
     assert_equal "08304", @enigma.find_key("vjqtbeaweqihssi", "291018")
   end
 
   def test_find_shifts_with_date_and_encrypted_message
-    assert_equal [14, 86, 32, 8], @enigma.find_shifts("vjqtbeaweqihssi", "291018")
+    assert_equal [14, 5, 5, 8], @enigma.find_shifts("vjqtbeaweqihssi", "291018")
   end
 
 end

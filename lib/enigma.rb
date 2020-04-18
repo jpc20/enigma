@@ -108,7 +108,21 @@ class Enigma
   end
 
   def find_key(encrypted_message, date)
-    #date_to_offsets(date)
+    key = ""
+    offsets = date_to_offsets(date)
+    find_shifts(encrypted_message, date).each_with_index do |shift, index|
+      if shift - offsets[index] < 10 && index == 0
+        key.concat("0" + (shift - offsets[index]).to_s)
+      else
+        (0..9).each do |num|
+          if key.chars.pop.concat(num.to_s).to_i % 27 == shift
+            key.concat((num - offsets[index]).to_s)
+            break
+          end
+        end
+      end
+    end
+    key
   end
 
   def find_shifts(encrypted_message, date)

@@ -124,7 +124,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_crack_encrypted_message_with_a_date
-    skip
     expected =
   {
     decryption: "hello world end",

@@ -34,7 +34,7 @@ class Enigma
   def crack(encrypted_message, date = todays_date)
     {
       decryption: crack_message(encrypted_message, date),
-      #key: key,
+      key: find_key(encrypted_message, date),
       date: date
     }
   end

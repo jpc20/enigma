@@ -88,7 +88,7 @@ class Enigma
   end
 
   def split_message(message)
-    message.chars.each_slice(4).to_a.map do |chars|
+    message.chomp.chars.each_slice(4).to_a.map do |chars|
       chars.map { |char| char.downcase }
     end
   end
@@ -111,7 +111,7 @@ class Enigma
     key = ""
     offsets = date_to_offsets(date)
     find_shifts(encrypted_message, date).each_with_index do |shift, index|
-      if shift - offsets[index] < 10 && index == 0
+      if shift > offsets[index] && shift - offsets[index] < 10 && index == 0
         key.concat("0" + (shift - offsets[index]).to_s)
       else
         (0..9).each do |num|
@@ -126,22 +126,26 @@ class Enigma
   end
 
   def find_shifts(encrypted_message, date)
-    shifts = nil
+    shifts = []
     split_encrypted = split_message(encrypted_message)
     last_chars_length = split_encrypted.last.length
     if last_chars_length == 4
-      shifts = split_encrypted.last.zip([" ", "e", "n", "d"]).map do |message_char, end_char|
-        (@alphabet.find_index(message_char) - @alphabet.find_index(end_char))
+      shifts = split_encrypted.last.zip([" ", "e", "n", "d"]).map do |encrypted_char, end_char|
+        shift_amount(encrypted_char, end_char)
       end
     elsif last_chars_length < 4
-      shifts = split_encrypted.last.zip([" ", "e", "n", "d"].last(last_chars_length)).map do |message_char, end_char|
-        (@alphabet.find_index(message_char) - @alphabet.find_index(end_char)) % 27
+      shifts = split_encrypted.last.zip([" ", "e", "n", "d"].last(last_chars_length)).map do |encrypted_char, end_char|
+        shift_amount(encrypted_char, end_char)
       end
       shifts << split_encrypted[-2].last(4 - last_chars_length).each_with_index.map do |char, index|
-        (@alphabet.find_index(char) - @alphabet.find_index([" ", "e", "n", "d"][index])) % 27
+        shift_amount(char, [" ", "e", "n", "d"][index])
       end
     end
     shifts.flatten
+  end
+
+  def shift_amount(encrypted_char, end_char)
+    (@alphabet.find_index(encrypted_char) - @alphabet.find_index(end_char)) % 27
   end
 
 end

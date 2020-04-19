@@ -66,12 +66,7 @@ class Enigma
     shifts = find_shifts(encrypted_message, date)
     split_message(encrypted_message).each do |chars|
       chars.zip(shifts).each do |char, shift_value|
-        if alphabet.include?(char)
-          new_index = (@alphabet.find_index(char) - shift_value) % 27
-          cracked.concat(@alphabet[new_index])
-        else
-          cracked.concat(char)
-        end
+        cracked.concat(decrypt_character(char, shift_valuegi))
       end
     end
     cracked

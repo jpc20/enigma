@@ -1,14 +1,12 @@
 require "./lib/encryptor"
 require "./lib/decryptor"
-require "./lib/code_breaker"
 
 class Enigma
 
-  attr_reader :encryptor, :decryptor, :code_breaker
+  attr_reader :encryptor, :decryptor
   def initialize
     @encryptor = Encryptor.new
     @decryptor = Decryptor.new
-    @code_breaker = CodeBreaker.new
   end
 
   def todays_date
@@ -30,7 +28,7 @@ class Enigma
   end
 
   def crack(encrypted_message, date = todays_date)
-    @code_breaker.crack(encrypted_message, date)
+    @decryptor.crack(encrypted_message, date)
   end
 
 end

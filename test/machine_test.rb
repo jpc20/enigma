@@ -32,8 +32,4 @@ class MachineTest < Minitest::Test
     assert_equal [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]], @machine.split_message("hello world")
   end
 
-  def test_decrypt_character
-    assert_equal "a", @machine.decrypt_character("d", 3)
-    assert_equal "!", @machine.decrypt_character("!", 3)
-  end
 end

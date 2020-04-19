@@ -20,6 +20,26 @@ class DecryptorTest < Minitest::Test
     assert_equal expected, @decryptor.decrypt("keder ohulw", "02715", "040895")
   end
 
+  def test_decrypt_with_todays_date
+    @decryptor.stubs(:todays_date).returns("040895")
+    expected = {
+          decryption: "hello world",
+          key: "02715",
+          date: "040895"
+    }
+    assert_equal expected, @decryptor.decrypt("keder ohulw", "02715")
+  end
+
+  def test_decrypt_with_characters_not_in_alphabet
+    @decryptor.stubs(:todays_date).returns("040895")
+    expected = {
+      decryption: "hello world!",
+      key: "02715",
+      date: "040895"
+    }
+    assert_equal expected, @decryptor.decrypt("Keder Ohulw!", "02715")
+  end
+
   def test_decrypt_message
     assert_equal "hello world", @decryptor.decrypt_message("keder ohulw", "02715", "040895")
   end

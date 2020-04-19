@@ -103,6 +103,10 @@ class DecryptorTest < Minitest::Test
     key = "08"
     @decryptor.find_next_key_value(key, 1, 3, 5)
     assert_equal "083", key
+    @decryptor.find_next_key_value(key, 2, 2, 5)
+    assert_equal "0830", key
+    @decryptor.find_next_key_value(key, 3, 4, 8)
+    assert_equal "08304", key
   end
 
 end

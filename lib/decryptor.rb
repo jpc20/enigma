@@ -32,9 +32,9 @@ class Decryptor < Machine
   def crack_message(encrypted_message, date)
     cracked = ""
     shifts = find_shifts(encrypted_message, date)
-    split_message(encrypted_message).each do |chars|
-      chars.zip(shifts).each do |char, shift_value|
-        cracked.concat(decrypt_character(char, shift_value))
+    split_message(encrypted_message).each do |encrypted_chars|
+      encrypted_chars.zip(shifts).each do |encrypted_char, shift_value|
+        cracked.concat(decrypt_character(encrypted_char, shift_value))
       end
     end
     cracked
@@ -42,8 +42,8 @@ class Decryptor < Machine
 
   def decrypt_character(char, shift)
     return char if !@alphabet.include?(char)
-      new_index = (@alphabet.find_index(char) - shift) % 27
-      @alphabet[new_index]
+    new_index = (@alphabet.find_index(char) - shift) % 27
+    @alphabet[new_index]
   end
 
   def find_shifts(encrypted_message, date)

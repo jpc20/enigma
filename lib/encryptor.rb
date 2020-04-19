@@ -13,9 +13,9 @@ class Encryptor < Machine
   def encrypt_message(message, key, date)
     encrypted = ""
     shifts = create_shifts(key, date)
-    split_message(message).each do |chars|
-      chars.zip(shifts).each do |char, shift_value|
-        encrypted.concat(encrypt_character(char, shift_value))
+    split_message(message).each do |message_chars|
+      message_chars.zip(shifts).each do |message_char, shift_value|
+        encrypted.concat(encrypt_character(message_char, shift_value))
       end
     end
     encrypted

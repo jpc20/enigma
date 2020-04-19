@@ -144,7 +144,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_crack_encrypted_message_witout_date
-    skip
     @enigma.stubs(:todays_date).returns("291018")
     expected =
     {
@@ -158,14 +157,11 @@ class EnigmaTest < Minitest::Test
     @enigma.stubs(:todays_date).returns("190420")
     expected =
     {
-      decryption: "this is an 'very' important message.
-      it needs to be encrypted!!! end",
+      decryption: "this is an 'very' important message.\nit needs to be encrypted!!! end",
       date: "190420",
       key: "14140"
     }
-
-    assert_equal expected, @enigma.crack("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
-    kedmgqhrbeszdqddpovxreic!!!zgzh")
+    assert_equal expected, @enigma.crack("mzwet fmuen'owek'rwzifefuegmfwfeuys.\n gmgwsqlrgattsmyeqdrggrx!!!twaq")
   end
 
   def test_find_key_with_date_and_encrypted_message
@@ -176,6 +172,10 @@ class EnigmaTest < Minitest::Test
 
     assert_equal "20258", @enigma.find_key("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
     kedmgqhrbeszdqddpovxreic!!!zgzh", "190420")
+  end
+
+  def test_find_first_key
+    assert_equal "08", @enigma.find_first_key(14, 6)
   end
 
   def test_find_shifts_with_date_and_encrypted_message

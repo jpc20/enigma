@@ -108,10 +108,8 @@ class Enigma
     key  = ""
     offsets = date_to_offsets(date)
     find_shifts(encrypted_message, date).each_with_index do |shift, index|
-      if ((shift - offsets[index]) % 27).to_s.length == 1 && index == 0
-        key.concat("0" + ((shift - offsets[index]) % 27).to_s)
-      elsif index == 0
-        key.concat(((shift - offsets[index]) % 27).to_s)
+      if index == 0
+        key.concat(find_first_key(shift, offsets[index]))g
       else
         new_key_value = 0
         until key.length > index + 1
@@ -123,6 +121,14 @@ class Enigma
       end
     end
     key
+  end
+
+  def find_first_key(shift, offset)
+    if ((shift - offset) % 27).to_s.length == 1
+      "0" + ((shift - offset) % 27).to_s
+    else
+      ((shift - offset) % 27).to_s
+    end
   end
 
   def find_shifts(encrypted_message, date)
@@ -155,5 +161,6 @@ class Enigma
   def shift_amount(encrypted_char, end_char)
     (@alphabet.find_index(encrypted_char) - @alphabet.find_index(end_char)) % 27
   end
+
 
 end

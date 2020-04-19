@@ -1,9 +1,10 @@
 class Enigma
 
-  attr_reader :alphabet, :encryptor
+  attr_reader :alphabet, :encryptor, :decryptor
   def initialize
     @alphabet = ("a".."z").to_a << " "
     @encryptor = Encryptor.new
+    @decryptor = Decryptor.new
   end
 
   def todays_date
@@ -21,11 +22,7 @@ class Enigma
   end
 
   def decrypt(encrypted_message, key, date = todays_date)
-    {
-      decryption: decrypt_message(encrypted_message, key, date),
-      key: key,
-      date: date
-    }
+    @decryptor.decrypt(encrypted_message, key, date)
   end
 
   def crack(encrypted_message, date = todays_date)

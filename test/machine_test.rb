@@ -22,4 +22,20 @@ class MachineTest < Minitest::Test
     @machine.stubs(:todays_date).returns("160420")
     assert_equal "160420", @machine.todays_date
   end
+
+  def test_create_keys
+    assert_equal [2, 27, 71, 15], @machine.split_key("02715")
+  end
+
+  def test_create_offsets_from_a_given_date
+    assert_equal [1, 0, 2, 5], @machine.date_to_offsets("040895")
+  end
+
+  def test_find_the_shifts_from_the_key_and_date
+    assert_equal [3, 27, 73, 20], @machine.create_shifts("02715", "040895")
+  end
+
+  def test_split_message_groups_of_4
+    assert_equal [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]], @machine.split_message("hello world")
+  end
 end

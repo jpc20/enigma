@@ -16,13 +16,6 @@ class MachineTest < Minitest::Test
     assert_equal expected, @machine.alphabet
   end
 
-  def test_it_can_return_the_date
-    assert_instance_of String, @machine.todays_date
-    assert_equal 6, @machine.todays_date.length
-    @machine.stubs(:todays_date).returns("160420")
-    assert_equal "160420", @machine.todays_date
-  end
-
   def test_create_keys
     assert_equal [2, 27, 71, 15], @machine.split_key("02715")
   end
@@ -37,5 +30,10 @@ class MachineTest < Minitest::Test
 
   def test_split_message_groups_of_4
     assert_equal [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]], @machine.split_message("hello world")
+  end
+
+  def test_decrypt_character
+    assert_equal "a", @machine.decrypt_character("d", 3)
+    assert_equal "!", @machine.decrypt_character("!", 3)
   end
 end

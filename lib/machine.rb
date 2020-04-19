@@ -5,10 +5,6 @@ class Machine
     @alphabet = ("a".."z").to_a << " "
   end
 
-  def todays_date
-    Date.today.strftime(("%d%m%y"))
-  end
-
   def create_shifts(key, date)
     split_key(key).zip(date_to_offsets(date)).map { |nums| nums.reduce(:+) }
   end
@@ -27,6 +23,12 @@ class Machine
     message.chomp.chars.each_slice(4).to_a.map do |chars|
       chars.map { |char| char.downcase }
     end
+  end
+
+  def decrypt_character(char, shift)
+    return char if !@alphabet.include?(char)
+    new_index = (@alphabet.find_index(char) - shift) % 27
+    @alphabet[new_index]
   end
 
 end

@@ -24,8 +24,4 @@ class DecryptorTest < Minitest::Test
     assert_equal "hello world", @decryptor.decrypt_message("keder ohulw", "02715", "040895")
   end
 
-  def test_decrypt_character
-    assert_equal "a", @decryptor.decrypt_character("d", 3)
-    assert_equal "!", @decryptor.decrypt_character("!", 3)
-  end
 end

@@ -21,9 +21,4 @@ class Decryptor < Machine
     decrypted
   end
 
-  def decrypt_character(char, shift)
-    return char if !@alphabet.include?(char)
-    new_index = (@alphabet.find_index(char) - shift) % 27
-    @alphabet[new_index]
-  end
 end

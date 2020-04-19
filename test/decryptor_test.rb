@@ -38,6 +38,11 @@ class DecryptorTest < Minitest::Test
     assert_equal "hello world end", @decryptor.crack_message("vjqtbeaweqihssi", "291018")
   end
 
+  def test_decrypt_character
+    assert_equal "a", @decryptor.decrypt_character("d", 3)
+    assert_equal "!", @decryptor.decrypt_character("!", 3)
+  end
+
   def test_find_shifts_with_date_and_encrypted_message
     assert_equal [14, 5, 5, 8], @decryptor.find_shifts("vjqtbeaweqihssi", "291018")
   end

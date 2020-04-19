@@ -40,6 +40,12 @@ class Decryptor < Machine
     cracked
   end
 
+  def decrypt_character(char, shift)
+    return char if !@alphabet.include?(char)
+      new_index = (@alphabet.find_index(char) - shift) % 27
+      @alphabet[new_index]
+  end  
+
   def find_shifts(encrypted_message, date)
     split_encrypted = split_message(encrypted_message)
     last_chars_length = split_encrypted.last.length

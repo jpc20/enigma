@@ -182,6 +182,12 @@ class EnigmaTest < Minitest::Test
     assert_equal [14, 5, 5, 8], @enigma.find_shifts("vjqtbeaweqihssi", "291018")
   end
 
+  def test_shifts_for_multiple_of_4
+    end_array = [" ", "e", "n", "d"]
+    split_message = @enigma.split_message("wvjqtbeaweqihssi")
+    assert_equal [8, 14, 5, 5], @enigma.shifts_for_multiple_of_4(split_message, end_array)
+  end
+
   def test_find_shift_amount
     assert_equal 8, @enigma.shift_amount("h", " ")
     assert_equal 14, @enigma.shift_amount("s", "e")

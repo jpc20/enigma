@@ -129,10 +129,9 @@ class Enigma
     shifts = []
     split_encrypted = split_message(encrypted_message)
     last_chars_length = split_encrypted.last.length
+    end_array = [" ", "e", "n", "d"]
     if last_chars_length == 4
-      shifts = split_encrypted.last.zip([" ", "e", "n", "d"]).map do |encrypted_char, end_char|
-        shift_amount(encrypted_char, end_char)
-      end
+      shifts = shifts_for_multiple_of_4(split_encrypted, end_array)
     elsif last_chars_length < 4
       shifts = split_encrypted.last.zip([" ", "e", "n", "d"].last(last_chars_length)).map do |encrypted_char, end_char|
         shift_amount(encrypted_char, end_char)
@@ -142,6 +141,12 @@ class Enigma
       end
     end
     shifts.flatten
+  end
+
+  def shifts_for_multiple_of_4(split_message, end_array)
+    split_message.last.zip(end_array).map do |encrypted_char, end_char|
+      shift_amount(encrypted_char, end_char)
+    end
   end
 
   def shift_amount(encrypted_char, end_char)

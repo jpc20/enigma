@@ -169,13 +169,19 @@ class EnigmaTest < Minitest::Test
 
     assert_equal "14140", @enigma.find_key("mzwet fmuen'owek'rwzifefuegmfwfeuys.
      gmgwsqlrgattsmyeqdrggrx!!!twaq", "190420")
-
     assert_equal "20258", @enigma.find_key("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
     kedmgqhrbeszdqddpovxreic!!!zgzh", "190420")
   end
 
   def test_find_first_key
     assert_equal "08", @enigma.find_first_key(14, 6)
+    assert_equal "20", @enigma.find_first_key(26, 6)
+  end
+
+  def test_find_next_key_value
+    key = "08"
+    @enigma.find_next_key_value(key, 1, 3, 5)
+    assert_equal "083", key
   end
 
   def test_find_shifts_with_date_and_encrypted_message

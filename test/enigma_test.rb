@@ -92,7 +92,12 @@ class EnigmaTest < Minitest::Test
 
   def test_encrypt_character
     assert_equal "d", @enigma.encrypt_character("a", 3)
-    assert_equal "!", @enigma.encrypt_character("!gi", 3)
+    assert_equal "!", @enigma.encrypt_character("!", 3)
+  end
+
+  def test_decrypt_character
+    assert_equal "a", @enigma.decrypt_character("d", 3)
+    assert_equal "!", @enigma.decrypt_character("!", 3)
   end
 
   def test_create_keys

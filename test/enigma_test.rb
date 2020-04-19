@@ -86,8 +86,18 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.encrypt("hello world")
   end
 
-  def test_message_groups_of_4
+  def test_split_message_groups_of_4
     assert_equal [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]], @enigma.split_message("hello world")
+  end
+
+  def test_encrypt_character
+    assert_equal "d", @enigma.encrypt_character("a", 3)
+    assert_equal "!", @enigma.encrypt_character("!", 3)
+  end
+
+  def test_decrypt_character
+    assert_equal "a", @enigma.decrypt_character("d", 3)
+    assert_equal "!", @enigma.decrypt_character("!", 3)
   end
 
   def test_create_keys
@@ -147,28 +157,48 @@ class EnigmaTest < Minitest::Test
     @enigma.stubs(:todays_date).returns("190420")
     expected =
     {
-      decryption: "this is an 'very' important message.
-      it needs to be encrypted!!! end",
+      decryption: "this is an 'very' important message.\nit needs to be encrypted!!! end",
       date: "190420",
       key: "14140"
     }
-
-    assert_equal expected, @enigma.crack("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
-    kedmgqhrbeszdqddpovxreic!!!zgzh")
+    assert_equal expected, @enigma.crack("mzwet fmuen'owek'rwzifefuegmfwfeuys.\n gmgwsqlrgattsmyeqdrggrx!!!twaq")
   end
 
   def test_find_key_with_date_and_encrypted_message
     assert_equal "08304", @enigma.find_key("vjqtbeaweqihssi", "291018")
-    
+
     assert_equal "14140", @enigma.find_key("mzwet fmuen'owek'rwzifefuegmfwfeuys.
      gmgwsqlrgattsmyeqdrggrx!!!twaq", "190420")
-
     assert_equal "20258", @enigma.find_key("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
     kedmgqhrbeszdqddpovxreic!!!zgzh", "190420")
   end
 
+  def test_find_first_key
+    assert_equal "08", @enigma.find_first_key(14, 6)
+    assert_equal "20", @enigma.find_first_key(26, 6)
+  end
+
+  def test_find_next_key_value
+    key = "08"
+    @enigma.find_next_key_value(key, 1, 3, 5)
+    assert_equal "083", key
+  end
+
   def test_find_shifts_with_date_and_encrypted_message
     assert_equal [14, 5, 5, 8], @enigma.find_shifts("vjqtbeaweqihssi", "291018")
+  end
+
+  def test_shifts_for_multiple_of_4
+    end_array = [" ", "e", "n", "d"]
+    split_message = @enigma.split_message("wvjqtbeaweqihssi")
+    assert_equal [8, 14, 5, 5], @enigma.shifts_for_multiple_of_4(split_message, end_array)
+  end
+
+  def test_shifts_for_less_than_4_chars
+    end_array = [" ", "e", "n", "d"]
+    split_message = @enigma.split_message("vjqtbeaweqihssi")
+    last_chars_length = split_message.last.length
+    assert_equal [14, 5, 5, 8], @enigma.shifts_for_less_than_4_chars(split_message, end_array, last_chars_length)
   end
 
   def test_find_shift_amount

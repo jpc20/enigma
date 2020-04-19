@@ -143,10 +143,28 @@ class EnigmaTest < Minitest::Test
     }
 
     assert_equal expected, @enigma.crack("vjqtbeaweqihssi")
+
+    @enigma.stubs(:todays_date).returns("190420")
+    expected =
+    {
+      decryption: "this is an 'very' important message.
+      it needs to be encrypted!!! end",
+      date: "190420",
+      key: "14140"
+    }
+
+    assert_equal expected, @enigma.crack("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
+    kedmgqhrbeszdqddpovxreic!!!zgzh")
   end
 
   def test_find_key_with_date_and_encrypted_message
     assert_equal "08304", @enigma.find_key("vjqtbeaweqihssi", "291018")
+    
+    assert_equal "14140", @enigma.find_key("mzwet fmuen'owek'rwzifefuegmfwfeuys.
+     gmgwsqlrgattsmyeqdrggrx!!!twaq", "190420")
+
+    assert_equal "20258", @enigma.find_key("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
+    kedmgqhrbeszdqddpovxreic!!!zgzh", "190420")
   end
 
   def test_find_shifts_with_date_and_encrypted_message

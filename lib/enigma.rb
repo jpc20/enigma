@@ -108,17 +108,20 @@ class Enigma
   end
 
   def find_key(encrypted_message, date)
-    key = ""
+    key  = ""
     offsets = date_to_offsets(date)
     find_shifts(encrypted_message, date).each_with_index do |shift, index|
-      if shift > offsets[index] && shift - offsets[index] < 10 && index == 0
-        key.concat("0" + (shift - offsets[index]).to_s)
+      if ((shift - offsets[index]) % 27).to_s.length == 1 && index == 0
+        key.concat("0" + ((shift - offsets[index]) % 27).to_s)
+      elsif index == 0
+        key.concat(((shift - offsets[index]) % 27).to_s)
       else
-        (0..9).each do |num|
-          if key.chars.pop.concat(num.to_s).to_i % 27 == shift
-            key.concat((num - offsets[index]).to_s)
-            break
+        new_key_value = 0
+        until key.length > index + 1
+          if (key.chars.last.concat(new_key_value.to_s)).to_i % 27 == shift
+            key.concat((((new_key_value - offsets[index]) % 27).to_s))
           end
+          new_key_value += 1
         end
       end
     end
@@ -137,8 +140,8 @@ class Enigma
       shifts = split_encrypted.last.zip([" ", "e", "n", "d"].last(last_chars_length)).map do |encrypted_char, end_char|
         shift_amount(encrypted_char, end_char)
       end
-      shifts << split_encrypted[-2].last(4 - last_chars_length).each_with_index.map do |char, index|
-        shift_amount(char, [" ", "e", "n", "d"][index])
+      shifts << split_encrypted[-2].last(4 - last_chars_length).each_with_index.map do |encrypted_char, index|
+        shift_amount(encrypted_char, [" ", "e", "n", "d"][index])
       end
     end
     shifts.flatten

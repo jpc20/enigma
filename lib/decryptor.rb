@@ -130,13 +130,11 @@ class Decryptor < Machine
 
   def shifts_minus_offsets(encrypted_message, date)
     offsets = date_to_offsets(date)
-    key_values = []
-    find_shifts(encrypted_message, date).each_with_index do |shift, index|
+    find_shifts(encrypted_message, date).each_with_index.map do |shift, index|
       shifted = shift - offsets[index]
       shifted %= 27 if shifted < 0
-      key_values << shifted
+      shifted
     end
-    key_values
   end
 
 end

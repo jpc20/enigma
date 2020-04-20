@@ -85,24 +85,43 @@ class DecryptorTest < Minitest::Test
     assert_equal 14, @decryptor.shift_amount("s", "e")
   end
 
-  def test_find_key_with_date_and_encrypted_mressage
+  def test_find_key_with_date_and_encrypted_message
     assert_equal "08304", @decryptor.find_key("vjqtbeaweqihssi", "291018")
-
     assert_equal "14140", @decryptor.find_key("mzwet fmuen'owek'rwzifefuegmfwfeuys.
      gmgwsqlrgattsmyeqdrggrx!!!twaq", "190420")
-    assert_equal "20258", @decryptor.find_key("sjuwzkdd pl'ugcb'buqoqcx pedlgdw iq.
-    kedmgqhrbeszdqddpovxreic!!!zgzh", "190420")
+    assert_equal "14811", @decryptor.find_key("mfictgskul 'ocri'yiximrdultkfcscuee.
+    gtkgceolytzt ekylcbrntpx!!!tcno", "200420")
   end
 
-  def test_find_first_key
-    assert_equal "08", @decryptor.find_first_key(14, 6)
-    assert_equal "20", @decryptor.find_first_key(26, 6)
+
+  def test_find_all_potential_keys
+    assert_equal [["08", "35", "62", "89"], ["02", "29", "56", "83"], ["03", "30", "57", "84"], ["04", "31", "58", "85"]], @decryptor.find_all_potential_keys("vjqtbeaweqihssi", "291018")
   end
 
-  def test_find_next_key_value
-    key = "08"
-    @decryptor.find_next_key_value(key, 1, 3, 5)
-    assert_equal "083", key
+  def test_find_working_keys
+    assert_equal ["08", "83", "30", "04"], @decryptor.find_working_keys("vjqtbeaweqihssi", "291018")
+  end
+
+  def test_combine_keys
+    assert_equal "08304", @decryptor.combine_keys(["08", "83", "30", "04"])
+  end
+
+  def test_key_is_valid
+    assert_equal true, @decryptor.key_is_valid?(["02", "29", "56", "83"], "08")
+    assert_equal false, @decryptor.key_is_valid?(["02", "29", "56", "83"], "89")
+  end
+
+  def test_find_next_valid_key
+    assert_equal "83", @decryptor.find_next_valid_key(["02", "29", "56", "83"], "08")
+  end
+
+  def test_first_key_value
+    assert_equal "09", @decryptor.first_key_value(9)
+    assert_equal "12", @decryptor.first_key_value(12)
+  end
+
+  def test_shifts_minus_offsets_when_finding_potential_keys
+    assert_equal [8, 2, 3, 4], @decryptor.shifts_minus_offsets("vjqtbeaweqihssi", "291018")
   end
 
 end

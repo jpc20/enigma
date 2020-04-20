@@ -93,17 +93,15 @@ class Decryptor < Machine
 
   def find_working_keys(encrypted_message, date)
     potential_keys = find_all_potential_keys(encrypted_message, date)
-    seperated_keys = []
-    potential_keys.first.find do |key_1|
+    potential_keys.first.each do |key_1|
       next if !key_is_valid?(potential_keys[1], key_1)
       key_2 = find_next_valid_key(potential_keys[1], key_1)
       next if !key_is_valid?(potential_keys[2], key_2)
       key_3 = find_next_valid_key(potential_keys[2], key_2)
       next if !key_is_valid?(potential_keys[3], key_3)
       key_4 = find_next_valid_key(potential_keys[3], key_3)
-      seperated_keys << [key_1, key_2, key_3, key_4]
+      return [key_1, key_2, key_3, key_4]
     end
-    seperated_keys.flatten
   end
 
   def key_is_valid?(potential_key_set, key)
@@ -122,7 +120,7 @@ class Decryptor < Machine
         (key_value + 54).to_s,
         (key_value + 81).to_s,
       ]
-    end
+    end.map { |key_values|  key_values.reject { |key_value| key_value.to_i >= 100 }}
   end
 
   def first_key_value(key)

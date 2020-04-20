@@ -113,14 +113,20 @@ class Decryptor < Machine
   end
 
   def find_all_potential_keys(encrypted_message, date)
-    all_potential_keys = Hash.new { |hash, key| hash[key] =  []}
+    all_potential_keys = Hash.new
     shifts_minus_offsets(encrypted_message, date).each_with_index do |key_value, index|
-        all_potential_keys[index] << first_key_value(key_value)
-        all_potential_keys[index] << (key_value + 27).to_s
-        all_potential_keys[index] << (key_value + 54).to_s
-        all_potential_keys[index] << (key_value + 81).to_s
+      all_potential_keys[index] = calculate_possible_key_values(key_value)
     end
-    all_potential_keys.transform_values{ |key_values|  key_values.reject{ |key_value| key_value.to_i >= 100 }}
+    all_potential_keys
+  end
+
+  def calculate_possible_key_values(key_value)
+    [
+      first_key_value(key_value),
+      (key_value + 27).to_s,
+      (key_value + 54).to_s,
+      (key_value + 81).to_s,
+    ].reject{ |key_value| key_value.to_i >= 100}
   end
 
   def first_key_value(key)

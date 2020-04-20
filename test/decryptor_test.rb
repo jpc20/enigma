@@ -116,6 +116,10 @@ class DecryptorTest < Minitest::Test
     assert_equal "83", @decryptor.find_next_valid_key(["02", "29", "56", "83"], "08")
   end
 
+  def test_calculate_possible_key_values
+    assert_equal ["01", "28", "55", "82"], @decryptor.calculate_possible_key_values(1)
+  end
+
   def test_first_key_value
     assert_equal "09", @decryptor.first_key_value(9)
     assert_equal "12", @decryptor.first_key_value(12)

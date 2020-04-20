@@ -93,7 +93,7 @@ class Decryptor < Machine
 
   def find_working_keys(encrypted_message, date)
     potential_keys = find_all_potential_keys(encrypted_message, date)
-    potential_keys.first.each do |key_1|
+    potential_keys[0].each do |key_1|
       next if !key_is_valid?(potential_keys[1], key_1)
       key_2 = find_next_valid_key(potential_keys[1], key_1)
       next if !key_is_valid?(potential_keys[2], key_2)
@@ -113,14 +113,14 @@ class Decryptor < Machine
   end
 
   def find_all_potential_keys(encrypted_message, date)
-    shifts_minus_offsets(encrypted_message, date).map do |key_value|
-      [
-        first_key_value(key_value),
-        (key_value + 27).to_s,
-        (key_value + 54).to_s,
-        (key_value + 81).to_s,
-      ]
-    end.map { |key_values|  key_values.reject { |key_value| key_value.to_i >= 100 }}
+    all_potential_keys = Hash.new { |hash, key| hash[key] =  []}
+    shifts_minus_offsets(encrypted_message, date).each_with_index do |key_value, index|
+        all_potential_keys[index] << first_key_value(key_value)
+        all_potential_keys[index] << (key_value + 27).to_s
+        all_potential_keys[index] << (key_value + 54).to_s
+        all_potential_keys[index] << (key_value + 81).to_s
+    end
+    all_potential_keys.transform_values{ |key_values|  key_values.reject{ |key_value| key_value.to_i >= 100 }}
   end
 
   def first_key_value(key)

@@ -95,7 +95,8 @@ class DecryptorTest < Minitest::Test
 
 
   def test_find_all_potential_keys
-    assert_equal [["08", "35", "62", "89"], ["02", "29", "56", "83"], ["03", "30", "57", "84"], ["04", "31", "58", "85"]], @decryptor.find_all_potential_keys("vjqtbeaweqihssi", "291018")
+    expected = {0=>["08", "35", "62", "89"], 1=>["02", "29", "56", "83"], 2=>["03", "30", "57", "84"], 3=>["04", "31", "58", "85"]}
+    assert_equal expected, @decryptor.find_all_potential_keys("vjqtbeaweqihssi", "291018")
   end
 
   def test_find_working_keys

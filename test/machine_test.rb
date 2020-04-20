@@ -32,4 +32,9 @@ class MachineTest < Minitest::Test
     assert_equal [["h", "e", "l", "l"], ["o", " ", "w", "o"], ["r", "l", "d"]], @machine.split_message("hello world")
   end
 
+  def test_find_shift_amount
+    assert_equal 8, @machine.shift_amount("h", " ")
+    assert_equal 14, @machine.shift_amount("s", "e")
+  end
+
 end

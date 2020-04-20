@@ -25,4 +25,8 @@ class Machine
     end
   end
 
+  def shift_amount(encrypted_char, end_char)
+    (@alphabet.find_index(encrypted_char) - @alphabet.find_index(end_char)) % 27
+  end
+
 end

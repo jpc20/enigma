@@ -85,4 +85,12 @@ class DecryptorTest < Minitest::Test
     assert_equal 14, @decryptor.shift_amount("s", "e")
   end
 
+  def test_find_key_with_date_and_encrypted_message
+    assert_equal "08304", @decryptor.find_key("vjqtbeaweqihssi", "291018")
+    assert_equal "14140", @decryptor.find_key("mzwet fmuen'owek'rwzifefuegmfwfeuys.
+     gmgwsqlrgattsmyeqdrggrx!!!twaq", "190420")
+    assert_equal "14811", @decryptor.find_key("mfictgskul 'ocri'yiximrdultkfcscuee.
+    gtkgceolytzt ekylcbrntpx!!!tcno", "200420")
+  end
+
 end

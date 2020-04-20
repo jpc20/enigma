@@ -1,3 +1,4 @@
+require_relative "machine"
 require_relative "crackable"
 
 class Keyfinder < Machine

@@ -27,6 +27,7 @@ class KeyFinderTest < Minitest::Test
 
   def test_find_working_keys
     assert_equal ["08", "83", "30", "04"], @key_finder.find_working_keys("vjqtbeaweqihssi", "291018")
+    assert_equal ["47", "71", "12", "22"], @key_finder.find_working_keys("zzzz", "200420")
   end
 
   def test_combine_keys
@@ -44,6 +45,7 @@ class KeyFinderTest < Minitest::Test
 
   def test_calculate_possible_key_values
     assert_equal ["01", "28", "55", "82"], @key_finder.calculate_possible_key_values(1)
+    assert_equal ["26", "53", "80"], @key_finder.calculate_possible_key_values(26)
   end
 
   def test_first_key_value
@@ -53,6 +55,7 @@ class KeyFinderTest < Minitest::Test
 
   def test_shifts_minus_offsets_when_finding_potential_keys
     assert_equal [8, 2, 3, 4], @key_finder.shifts_minus_offsets("vjqtbeaweqihssi", "291018")
+    assert_equal [20, 17, 12, 22], @key_finder.shifts_minus_offsets("zzzz", "200420")
   end
 
   def test_find_shifts_with_date_and_encrypted_message

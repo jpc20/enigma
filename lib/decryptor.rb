@@ -78,34 +78,67 @@ class Decryptor < Machine
   end
 
   def find_key(encrypted_message, date)
-    key  = ""
-    offsets = date_to_offsets(date)
-    find_shifts(encrypted_message, date).each_with_index do |shift, index|
+    combine_keys(find_working_keys(encrypted_message, date))
+  end
+
+  def combine_keys(keys)
+    keys.each_with_index.map do |key, index|
       if index == 0
-        key.concat(find_first_key(shift, offsets[index]))
+        key
       else
-        find_next_key_value(key, index, offsets[index], shift)
+        key[1]
       end
-    end
-    key
+    end.join
   end
 
-  def find_first_key(shift, offset)
-    if ((shift - offset) % 27).to_s.length == 1
-      "0" + ((shift - offset) % 27).to_s
-    else
-      ((shift - offset) % 27).to_s
+  def find_working_keys(encrypted_message, date)
+    potential_keys = find_all_potential_keys(encrypted_message, date)
+    seperated_keys = []
+    potential_keys.first.find do |key_1|
+      next if !key_is_valid?(potential_keys[1], key_1)
+      key_2 = find_next_valid_key(potential_keys[1], key_1)
+      next if !key_is_valid?(potential_keys[2], key_2)
+      key_3 = find_next_valid_key(potential_keys[2], key_2)
+      next if !key_is_valid?(potential_keys[3], key_3)
+      key_4 = find_next_valid_key(potential_keys[3], key_3)
+      seperated_keys << [key_1, key_2, key_3, key_4]
+    end
+    seperated_keys.flatten
+  end
+
+  def key_is_valid?(potential_key_set, key)
+    potential_key_set.any?{|potential_key| potential_key[0] == key[1]}
+  end
+
+  def find_next_valid_key(potential_key_set, key)
+    potential_key_set.find{|potential_key| potential_key[0] == key[1]}
+  end
+
+  def find_all_potential_keys(encrypted_message, date)
+    shifts_minus_offsets(encrypted_message, date).map do |key_value|
+      [
+        first_key_value(key_value),
+        (key_value + 27).to_s,
+        (key_value + 54).to_s,
+        (key_value + 81).to_s,
+      ]
     end
   end
 
-  def find_next_key_value(key, index, offset, shift)
-    new_key_value = 0
-    until key.length > index + 1
-      if (key.chars.last.concat(new_key_value.to_s)).to_i % 27 == shift
-        key.concat((((new_key_value - offset) % 27).to_s))
-      end
-      new_key_value += 1
+  def first_key_value(key)
+    return "0" + key.to_s if key.to_s.length == 1
+    key.to_s
+  end
+
+  def shifts_minus_offsets(encrypted_message, date)
+    offsets = date_to_offsets(date)
+    key_values = []
+    find_shifts(encrypted_message, date).each_with_index do |shift, index|
+      shifted = shift - offsets[index]
+      shifted %= 27 if shifted < 0
+      key_values << shifted
     end
+    key_values
   end
 
 end

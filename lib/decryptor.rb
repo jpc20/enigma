@@ -54,10 +54,6 @@ class Decryptor < Machine
     @alphabet[new_index]
   end
 
-  def shift_amount(encrypted_char, end_char)
-    (@alphabet.find_index(encrypted_char) - @alphabet.find_index(end_char)) % 27
-  end
-
   def find_key(encrypted_message, date)
     @key_finder.find_key(encrypted_message, date)
   end

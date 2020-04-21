@@ -1,9 +1,9 @@
 require_relative "machine"
 require_relative "key_finder"
-require_relative "crackable"
+require_relative "shiftable"
 
 class Decryptor < Machine
-  include Crackable
+  include Shiftable
 
   def initialize
     @key_finder = Keyfinder.new

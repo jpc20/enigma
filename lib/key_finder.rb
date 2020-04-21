@@ -1,8 +1,8 @@
 require_relative "machine"
-require_relative "crackable"
+require_relative "shiftable"
 
 class Keyfinder < Machine
-  include Crackable
+  include Shiftable
 
   def find_key(encrypted_message, date)
     combine_keys(find_working_keys(encrypted_message, date))

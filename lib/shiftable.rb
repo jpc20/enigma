@@ -1,4 +1,4 @@
-module Crackable
+module Shiftable
 
   def find_shifts(encrypted_message, date)
     split_encrypted = split_message(encrypted_message)
@@ -26,5 +26,5 @@ module Crackable
     end
     shifts.flatten
   end
-  
+
 end

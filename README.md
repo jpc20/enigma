@@ -4,15 +4,15 @@
 
 ### Description
 
-Ruby program designed to encyrpy text, decrypt text, and crack the encryption algorithm.  
+Ruby program designed to encyrpt text, decrypt text, and crack the encryption algorithm.  
 
 The encrypt method takes a message String as an argument. It can optionally take a Key and Date as arguments to use for encryption. 
 If the key is not included, it will generate a random key. If the date is not included, it will use today’s date. 
  
 The decrypt method takes a ciphertext String and the Key used for encryption as arguments. The decrypt method can optionally take a date as the third argument. 
-If no date is given, this it uses today’s date for decryption.  
+If no date is given, it uses today’s date for decryption.  
   
-The crack method takes 3 arguments. The first is an existing file that contains an encrypted message. The second is a file where the program writes the cracked message. 
+The crack method takes 3 arguments. The first is an existing file that contains an encrypted message. The second is a file path where the program writes the cracked message.
 The third is the date to be used for cracking. In addition to writing the cracked message to the file, 
 it outputs to the screen the file it wrote to, the key used for cracking, and the date used for cracking.
 
